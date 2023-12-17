@@ -67,12 +67,16 @@ class responseModel:
 dir_path = "files"
 print(f"file in folder: {os.listdir()}")
 for root, dirs, files in os.walk(dir_path):
-    print(files)
     for file in files:
         file_path = os.path.join(root, file)
         open_file = open(file_path, "r")
         lines = open_file.readlines()
         obj = adapter(file_path.split(".")[1])
         file_obj = obj.get()
-        resp = file_obj.read_file(lines)
-        print(f"for file:{file} \n {json.dumps(resp.__dict__)}")
+        if not file_obj:
+            print(f"WIP for format of file : {file}")
+        try:
+            resp = file_obj.read_file(lines)
+            print(f"for file:{file} \n {json.dumps(resp.__dict__)}")
+        except:
+            print("extesion is not handled for file : {file}")
